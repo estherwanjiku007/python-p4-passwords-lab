@@ -29,17 +29,24 @@ class Signup(Resource):
 
 class CheckSession(Resource):
     def get(self):
-        user_name=request.get_json()["username"]
-        print(user_name)
-        user=User.query.filter(User.username==user_name).first()
-        user_password=request.get_json().get("password")
-        if User.authenticate(user_password):
-            user_dict=user.to_dict()
-            return user_dict,200
-        else:
-            return {},204         
+        # user_name=request.get_json()["username"]
+        # print(user_name)
+        # user=User.query.filter(User.username==user_name).first()
+        # user_password=request.get_json().get("password")
+        # if User.authenticate(user_password):
+        #     user_dict=user.to_dict()
+        #     return user_dict,200
+        # else:
+        #     return {},204         
+        user_id=session.get("user_id")
+        if user_id is not None:
+            user=User.query.filter(User.id==user_id).first()
+            if  user is not None:
+               return user.to_dict()
+        return {},204
+        
 
-
+        
 
 class Login(Resource):
     def post(self):
